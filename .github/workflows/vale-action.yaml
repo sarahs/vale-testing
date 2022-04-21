@@ -4,7 +4,7 @@ name: Linter as style guide
 # **Why we have it**: To make it easy to review PRs
 # **Who does it impact**: Open source contributors making changes to .md files
 
-on: [pull_request]
+on: [pull_request, push]
 
 permissions:
   checks: write
