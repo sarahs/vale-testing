@@ -1,0 +1,29 @@
+name: Linter as style guide
+
+# **What it does**: Lints only files modified in a PR. Posts an annotation on lines with errors.
+# **Why we have it**: To make it easy to review PRs
+# **Who does it impact**: Open source contributors making changes to .md files
+
+on: [pull_request]
+
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  prose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+
+      - name: Vale
+        uses: errata-ai/vale-action@cb5ab4acdaf3169b1b5e5b4785d844aaea6366a0
+        with:
+          debug: true
+          files: __onlyModified
+        env:
+          # Required, set by GitHub actions automatically:
+          # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
