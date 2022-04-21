@@ -4,7 +4,7 @@ name: Linter as style guide
 # **Why we have it**: To make it easy to review PRs
 # **Who does it impact**: Open source contributors making changes to .md files
 
-on: [pull_request, push]
+on: [pull_request]
 
 permissions:
   checks: write
@@ -18,8 +18,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
 
-      - name: Vale
-        uses: sarahs/vale-action@ff9447943c1cad0f45649b630e29112511f80e5a
+      - name: Setup node
+        uses: actions/setup-node@1f8c6b94b26d0feae1e387ca63ccbdc44d27b561
+        with:
+          node-version: 16.14.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Create a Liquid-free *copy* of each Markdown file and save it with extension .TEMP.md
+      - name: Remove Liquid
+        run: .github/action-scripts/remove-liquid.js
+
+      # The Vale fork runs the CLI Vale on the .TEMP.md files, stores the report in JSON, and
+      # then updates the JSON to change the filenames from .TEMP.md to .md. It then passes that
+      # updated JSON to the Vale action's wrapper around the Checks API, which uses the results
+      # to add comments to the original .md files (at the original lines) in the PR diff.
+      # NOTE: This hack only works because the step that removes Liquid does NOT change line numbers.
+      - name: Vale (fork)
+        uses: sarahs/vale-action@80b7e7b6f1d65db474d35a9a2a9dbf8c823817de
         with:
           debug: true
           files: __onlyModified
