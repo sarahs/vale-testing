@@ -37,7 +37,7 @@ jobs:
       # to add comments to the original .md files (at the original lines) in the PR diff.
       # NOTE: This hack only works because the step that removes Liquid does NOT change line numbers.
       - name: Vale (fork)
-        uses: sarahs/vale-action@80b7e7b6f1d65db474d35a9a2a9dbf8c823817de
+        uses: sarahs/vale-action@9d61100a9a6c679441b0874462a64fd2c1f93c05
         with:
           debug: true
           files: __onlyModified
