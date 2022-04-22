@@ -27,17 +27,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Create a Liquid-free *copy* of each Markdown file and save it with extension .TEMP.md
+      # Create a Liquid-free version of each Markdown file. This versions aren't stored anywhere
+      # and will be torn down along with the checkout after the action is run.
+      # NOTE: This hack only works because the step that removes Liquid does NOT change line numbers.
       - name: Remove Liquid
         run: .github/action-scripts/remove-liquid.js
 
-      # The Vale fork runs the CLI Vale on the .TEMP.md files, stores the report in JSON, and
-      # then updates the JSON to change the filenames from .TEMP.md to .md. It then passes that
-      # updated JSON to the Vale action's wrapper around the Checks API, which uses the results
-      # to add comments to the original .md files (at the original lines) in the PR diff.
-      # NOTE: This hack only works because the step that removes Liquid does NOT change line numbers.
       - name: Vale (fork)
-        uses: sarahs/vale-action@2a79107b4a1d3504096612740eb4ff908e6eee41
+        uses: errata-ai/vale-action@cb5ab4acdaf3169b1b5e5b4785d844aaea6366a0
         with:
           debug: true
           files: __onlyModified

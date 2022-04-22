@@ -10,10 +10,11 @@ const allFiles = walkFiles('content', '.md')
 
 // Remove Liquid and write output to .TEMP.md
 allFiles.forEach(filename => {
-  const newFilename = filename.replace('.md', '.TEMP.md')
+  // const newFilename = filename.replace('.md', '.TEMP.md')
   const content = fs.readFileSync(filename, 'utf-8')
   const modified = content.replaceAll(/\{%.+?%\}/g, '')
-  fs.writeFileSync(newFilename, modified)
+  // fs.writeFileSync(newFilename, modified)
+  fs.writeFileSync(filename, modified)
 })
 
 function walkFiles(dir, ext, opts = {}) {
