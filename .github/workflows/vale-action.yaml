@@ -18,14 +18,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
 
-      - name: Setup node
-        uses: actions/setup-node@1f8c6b94b26d0feae1e387ca63ccbdc44d27b561
-        with:
-          node-version: 16.14.x
-          cache: npm
+      # - name: Setup node
+      #   uses: actions/setup-node@1f8c6b94b26d0feae1e387ca63ccbdc44d27b561
+      #   with:
+      #     node-version: 16.14.x
+      #     cache: npm
 
-      - name: Install dependencies
-        run: npm ci
+      # - name: Install dependencies
+      #   run: npm ci
 
       # Create a Liquid-free version of each Markdown file. This versions aren't
       # stored anywhere and will be torn down along with the checkout after each run.
@@ -33,8 +33,7 @@ jobs:
       # change line breaks in the files.
       - name: Remove Liquid
         # run: .github/action-scripts/remove-liquid.js
-        run: 's/{%.*?%}//g'
-        shell: perl -p -i -e {0}
+        run: sed -e -r -i 's/{%.*%}//g' content/* data/*
 
       - name: Vale (fork)
         uses: errata-ai/vale-action@cb5ab4acdaf3169b1b5e5b4785d844aaea6366a0
