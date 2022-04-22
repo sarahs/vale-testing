@@ -25,7 +25,7 @@ jobs:
       - name: Remove Liquid
         run: perl -p -i -e 's/{%.*?%}//g' content/* data/*
 
-      - name: Vale (fork)
+      - name: Vale
         uses: errata-ai/vale-action@cb5ab4acdaf3169b1b5e5b4785d844aaea6366a0
         with:
           debug: true
