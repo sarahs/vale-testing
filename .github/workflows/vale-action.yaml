@@ -40,7 +40,7 @@ jobs:
         uses: sarahs/vale-action@2a79107b4a1d3504096612740eb4ff908e6eee41
         with:
           debug: true
-          # files: __onlyModified
+          files: __onlyModified
         env:
           # Required, set by GitHub actions automatically:
           # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret
