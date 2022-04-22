@@ -27,11 +27,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Create a Liquid-free version of each Markdown file. This versions aren't stored anywhere
-      # and will be torn down along with the checkout after the action is run.
-      # NOTE: This hack only works because the step that removes Liquid does NOT change line numbers.
+      # Create a Liquid-free version of each Markdown file. This versions aren't
+      # stored anywhere and will be torn down along with the checkout after each run.
+      # NOTE: This hack only works because the step that removes Liquid does NOT
+      # change line breaks in the files.
       - name: Remove Liquid
-        run: .github/action-scripts/remove-liquid.js
+        # run: .github/action-scripts/remove-liquid.js
+        run: 's/{%.*?%}//g'
+        shell: perl -p -i -e {0}
 
       - name: Vale (fork)
         uses: errata-ai/vale-action@cb5ab4acdaf3169b1b5e5b4785d844aaea6366a0
