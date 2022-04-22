@@ -23,7 +23,7 @@ jobs:
       # NOTE: This hack only works because the step that removes Liquid does NOT
       # change line breaks in the files.
       - name: Remove Liquid
-        run: sed -i -r 's/{%.*%}//g' content/* data/*
+        run: perl -p -i -e 's/{%.*?%}//g' content/* data/*
 
       - name: Vale (fork)
         uses: errata-ai/vale-action@cb5ab4acdaf3169b1b5e5b4785d844aaea6366a0
